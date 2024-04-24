@@ -18,11 +18,11 @@ public class ArticleService {
 		return articleDAO.findAll();
 	}
 	
-	public Article getArticleById(Long id) {
-		return articleDAO.findById(id);
+	public Article getArticleById(String uid) {
+		return articleDAO.findByUid(uid);
 	}
 	
-	public void deleteArticle(Long id) {
-		articleDAO.delete(id);
+	public void deleteArticle(String uid) {
+		articleDAO.delete(uid);
 	}
 }

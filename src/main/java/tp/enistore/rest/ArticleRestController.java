@@ -23,14 +23,14 @@ public class ArticleRestController {
 		return articleService.getArticles();
 	}
 	
-	@GetMapping("/article/{id}")
-	public Article getArticleById(@PathVariable("id") Long id) {
-		return articleService.getArticleById(id);
+	@GetMapping("/article/{uid}")
+	public Article getArticleById(@PathVariable("uid") String uid) {
+		return articleService.getArticleById(uid);
 	}
 	
-	@GetMapping("/delete-article/{id}")
-	public Boolean deleteById(@PathVariable("id") Long id) {
-		articleService.deleteArticle(id);
+	@GetMapping("/delete-article/{uid}")
+	public Boolean deleteById(@PathVariable("uid") String uid) {
+		articleService.deleteArticle(uid);
 		return true;
 	}
 }

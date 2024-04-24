@@ -8,7 +8,7 @@ public interface ArticleDAO {
 
 	public List<Article> findAll();
 	
-	public Article findById(Long id);
+	public Article findByUid(String uid);
 	
-	public void delete(Long id);
+	public void delete(String uid);
 }
