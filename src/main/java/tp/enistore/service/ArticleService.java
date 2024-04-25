@@ -25,4 +25,8 @@ public class ArticleService {
 	public void deleteArticle(String uid) {
 		articleDAO.delete(uid);
 	}
+	
+	public void saveArticle(Article article) {
+		articleDAO.save(article);
+	}
 }

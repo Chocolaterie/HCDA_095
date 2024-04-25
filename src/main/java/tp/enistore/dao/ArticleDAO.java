@@ -11,4 +11,6 @@ public interface ArticleDAO {
 	public Article findByUid(String uid);
 	
 	public void delete(String uid);
+	
+	public void save(Article article);
 }

@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +34,18 @@ public class ArticleRestController {
 	@GetMapping("/delete-article/{uid}")
 	public Boolean deleteById(@PathVariable("uid") String uid) {
 		articleService.deleteArticle(uid);
+		return true;
+	}
+	
+	@PostMapping("/add-article")
+	public Boolean addArticle(@RequestBody Article article) {
+		articleService.saveArticle(article);
+		return true;
+	}
+	
+	@PatchMapping("/edit-article")
+	public Boolean editArticle(@RequestBody Article article) {
+		articleService.saveArticle(article);
 		return true;
 	}
 }
