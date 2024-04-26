@@ -3,6 +3,8 @@ package tp.enistore.rest;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import tp.enistore.service.ArticleService;
 
 @RestController
 @RequestMapping("/api/v1")
+@CrossOrigin
 public class ArticleRestController {
 
 	@Autowired
@@ -31,7 +34,7 @@ public class ArticleRestController {
 		return articleService.getArticleById(uid);
 	}
 	
-	@GetMapping("/delete-article/{uid}")
+	@DeleteMapping("/delete-article/{uid}")
 	public Boolean deleteById(@PathVariable("uid") String uid) {
 		articleService.deleteArticle(uid);
 		return true;
@@ -48,4 +51,5 @@ public class ArticleRestController {
 		articleService.saveArticle(article);
 		return true;
 	}
+
 }
