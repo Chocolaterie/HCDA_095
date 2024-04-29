@@ -32,6 +32,8 @@ public class AuthRestController {
 		// -- récupérer l'user avec l'email envoyé
 		Personne user = repository.findByEmail(personne.email);
 		
+		System.out.println("mon");
+		
 		// Appeler le service JWt pour générer un token
 		String token = jwtService.generateToken(user);
 		
