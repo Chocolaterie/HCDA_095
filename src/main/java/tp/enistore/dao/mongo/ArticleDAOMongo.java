@@ -33,7 +33,7 @@ public class ArticleDAOMongo implements ArticleDAO {
 	}
 
 	@Override
-	public void save(Article article) {
+	public Article save(Article article) {
 		// UPDATE :::::::::::
 		// Si existe alors update
 		if (article.uid != null && !"".equals(article.uid)) {
@@ -48,7 +48,7 @@ public class ArticleDAOMongo implements ArticleDAO {
 				article.id = foundArticle.id;
 				article.uid = foundArticle.uid;
 				
-				repository.save(article);
+				return repository.save(article);
 			}
 		}
 		// Sinon creation
@@ -57,8 +57,15 @@ public class ArticleDAOMongo implements ArticleDAO {
 			article.uid = UUID.randomUUID().toString();
 
 			// save en base
-			repository.save(article);
+			return repository.save(article);
 		}
+		
+		return null;
+	}
+
+	@Override
+	public Article findByTitle(String title) {
+		return repository.findByTitle(title);
 	}
 
 }

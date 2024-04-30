@@ -50,9 +50,26 @@ public class ArticleService {
 	}
 	
 	public ServiceResponse<Article> getArticleById(String uid) {
-		// return articleDAO.findByUid(uid);
+		// Préparer la reponse par défaut
+		ServiceResponse<Article> response = new ServiceResponse<Article>();
+				
+		// MongoRepo retourne null si n'existe pas
+		Article foundArticle = articleDAO.findByUid(uid);
 		
-		return new ServiceResponse<Article>();
+		// 702 - Si l'uid n'existe pas en base
+		if (foundArticle == null) {
+			response.code = "702";
+			response.message = String.format("Impossible de récupérer un article avec l'UID %s", uid);
+			
+			return response;
+		}
+		
+		// 200 - Succès
+		response.code = "200";
+		response.message = "Article récupéré avec succès";
+		response.data = foundArticle;
+		
+		return response;
 	}
 	
 	/**
@@ -80,8 +97,51 @@ public class ArticleService {
 	}
 	
 	public ServiceResponse<Article> saveArticle(Article article) {
-		articleDAO.save(article);
+		// Préparer la reponse par défaut
+		ServiceResponse<Article> response = new ServiceResponse<Article>();
 		
-		return new ServiceResponse<Article>();
+		// ==============================================
+		// CREATION
+		// ==============================================
+		if (article.uid == null || article.uid.isEmpty()) {
+			// Verifier que le titre n'est pas en base
+			Article articleByTitle = articleDAO.findByTitle(article.title);
+			
+			// 701 - Si le titre existe
+			if (articleByTitle != null) {
+				response.code = "701";
+				response.message = "Impossible d'ajouter un article avec un titre déjà existant";
+				
+				return response;
+			}
+			
+			// 200 - Succès
+			response.code = "200";
+			response.message = "Article ajouté avec succès";
+			response.data = articleDAO.save(article);
+			
+			// Retourne la réponse de la création
+			return response;
+		}
+		// ==============================================
+		// Edition
+		// ==============================================
+		// Verifier que le titre n'est pas en base
+		Article articleByTitle = articleDAO.findByTitle(article.title);
+		
+		// 701 - Si le titre existe
+		if (articleByTitle != null) {
+			response.code = "701";
+			response.message = "Impossible de modifier un article avec un titre déjà existant";
+			
+			return response;
+		}
+		
+		// 200 - Succès
+		response.code = "200";
+		response.message = "Article modifié avec succès";
+		response.data = articleDAO.save(article);
+					
+		return response;
 	}
 }

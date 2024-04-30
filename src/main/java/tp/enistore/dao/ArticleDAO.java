@@ -10,7 +10,9 @@ public interface ArticleDAO {
 	
 	public Article findByUid(String uid);
 	
+	public Article findByTitle(String title);
+	
 	public void delete(String uid);
 	
-	public void save(Article article);
+	public Article save(Article article);
 }

@@ -8,5 +8,7 @@ public interface ArticleMongoRepository extends MongoRepository<Article, String>
 
 	public Article findByUid(String uid);
 	
+	public Article findByTitle(String title);
+	
 	public void deleteByUid(String uid);
 }
