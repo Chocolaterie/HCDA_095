@@ -27,7 +27,15 @@ public class ArticleService {
 	}
 	
 	public ServiceResponse<List<Article>> getArticles(){
-		return articleDAO.findAll();
+		// Préparer la reponse par défaut
+		ServiceResponse<List<Article>> response = new ServiceResponse<List<Article>>();
+				
+		// Cas 1 : 200
+		response.code = "200";
+		response.message = "Articles récupérés avec succès";
+		response.data = articleDAO.findAll();
+		
+		return response;
 	}
 	
 	/**
@@ -42,7 +50,9 @@ public class ArticleService {
 	}
 	
 	public ServiceResponse<Article> getArticleById(String uid) {
-		return articleDAO.findByUid(uid);
+		// return articleDAO.findByUid(uid);
+		
+		return new ServiceResponse<Article>();
 	}
 	
 	/**
@@ -55,7 +65,9 @@ public class ArticleService {
 	}
 	
 	public ServiceResponse<Boolean> deleteArticle(String uid) {
-		articleDAO.delete(uid);
+		// articleDAO.delete(uid);
+		
+		return new ServiceResponse<Boolean>();
 	}
 	
 	/**
@@ -69,5 +81,7 @@ public class ArticleService {
 	
 	public ServiceResponse<Article> saveArticle(Article article) {
 		articleDAO.save(article);
+		
+		return new ServiceResponse<Article>();
 	}
 }
