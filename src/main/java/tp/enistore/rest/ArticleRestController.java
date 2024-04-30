@@ -26,29 +26,29 @@ public class ArticleRestController {
 	
 	@GetMapping("/articles")
 	public List<Article> getArticles() {
-		return articleService.getArticles();
+		return articleService.getArticles_Deprecated();
 	}
 	
 	@GetMapping("/article/{uid}")
 	public Article getArticleById(@PathVariable("uid") String uid) {
-		return articleService.getArticleById(uid);
+		return articleService.getArticleById_Deprecated(uid);
 	}
 	
 	@DeleteMapping("/delete-article/{uid}")
 	public Boolean deleteById(@PathVariable("uid") String uid) {
-		articleService.deleteArticle(uid);
+		articleService.deleteArticle_Deprecated(uid);
 		return true;
 	}
 	
 	@PostMapping("/add-article")
 	public Boolean addArticle(@RequestBody Article article) {
-		articleService.saveArticle(article);
+		articleService.saveArticle_Deprecated(article);
 		return true;
 	}
 	
 	@PatchMapping("/edit-article")
 	public Boolean editArticle(@RequestBody Article article) {
-		articleService.saveArticle(article);
+		articleService.saveArticle_Deprecated(article);
 		return true;
 	}
 
