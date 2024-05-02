@@ -82,9 +82,31 @@ public class ArticleService {
 	}
 	
 	public ServiceResponse<Boolean> deleteArticle(String uid) {
-		// articleDAO.delete(uid);
+		// Préparer la reponse par défaut
+		ServiceResponse<Boolean> response = new ServiceResponse<Boolean>();
 		
-		return new ServiceResponse<Boolean>();
+		// -- récupérer un article avec l'uid 
+		Article foundArticle = articleDAO.findByUid(uid);
+		
+		// 701 : Uid non existant car on ne trouve pas l'article
+		if (foundArticle == null) {
+			response.code = "701";
+			response.message = "Impossible de supprimer un article dont l'UID n'existe pas ";
+			response.data = false;
+			
+			return response;
+		}
+		
+		// 200 : Ok
+		// -- supprime l'article
+		articleDAO.delete(uid);
+		
+		// -- response
+		response.code = "200";
+		response.message = String.format("L'article %s a été supprimé avec succès", uid);
+		response.data = true;
+		
+		return response;
 	}
 	
 	/**
