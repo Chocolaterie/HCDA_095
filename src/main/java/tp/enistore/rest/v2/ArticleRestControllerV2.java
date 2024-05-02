@@ -44,11 +44,6 @@ public class ArticleRestControllerV2 {
 	public ServiceResponse<Article> editArticle(@RequestBody Article article) {
 		return articleService.saveArticle(article);
 	}
-	
-	@DeleteMapping("/delete-article/{uid}")
-	public ServiceResponse<Boolean> deleteById(@PathVariable("uid") String uid) {
-		return articleService.deleteArticle(uid);
-	}	
 }
 
 

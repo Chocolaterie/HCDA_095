@@ -6,14 +6,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tp.enistore.bo.Article;
+import tp.enistore.bo.Category;
+import tp.enistore.bo.FormRequest;
 import tp.enistore.bo.ServiceResponse;
 import tp.enistore.dao.ArticleDAO;
+import tp.enistore.dao.CategoryDAO;
+import tp.enistore.dao.mongo.CategoryMongoRepository;
 
 @Service
 public class ArticleService {
 
 	@Autowired
 	ArticleDAO articleDAO;
+	
+	@Autowired
+	CategoryDAO categoryDAO;
+	
+	@Autowired
+	CategoryMongoRepository categoryMongoRepository;
 	
 	/**
 	 * Version dépréciée
@@ -164,6 +174,76 @@ public class ArticleService {
 		response.message = "Article modifié avec succès";
 		response.data = articleDAO.save(article);
 					
+		return response;
+	}
+	
+	public ServiceResponse<Category> saveCategory(Category category) {
+		// Préparer la reponse par défaut
+		ServiceResponse<Category> response = new ServiceResponse<Category>();
+		
+		// ==============================================
+		// CREATION
+		// ==============================================
+		if (category.id == null) {
+			// Verifier que le titre n'est pas en base
+			Category categoryByName = categoryDAO.findByName(category.name);
+			
+			// 701 - Si le titre existe
+			if (categoryByName != null) {
+				response.code = "701";
+				response.message = "Impossible d'ajouter une catégorie avec un label déjà existant";
+				
+				return response;
+			}
+			
+			// 200 - Succès
+			response.code = "200";
+			response.message = "Categorie ajoutée avec succès";
+			response.data = categoryDAO.save(category);
+			
+			// Retourne la réponse de la création
+			return response;
+		}
+		// ==============================================
+		// Edition
+		// ==============================================
+		// Verifier que le titre n'est pas en base
+		Category categoryByName = categoryDAO.findByName(category.name);
+		
+		// 701 - Si le titre existe
+		if (categoryByName != null) {
+			response.code = "701";
+			response.message = "Impossible de modifier une categorie avec un titre déjà existant";
+			
+			return response;
+		}
+		
+		// 200 - Succès
+		response.code = "200";
+		response.message = "Categorie modifié avec succès";
+		response.data = categoryDAO.save(category);
+					
+		return response;
+	}
+
+	public ServiceResponse<Article> associateCategory(FormRequest<Article, String> requestData) {
+		// réponse par defaut
+		ServiceResponse<Article> response = new ServiceResponse<Article>();
+		
+		// récuéperer la category
+		Category category = categoryMongoRepository.findById(requestData.associationId).get();
+		
+		// récupérer l'article
+		Article article = articleDAO.findByUid(requestData.data.uid);
+		
+		// association
+		article.category = category;
+		
+		articleDAO.save(article);
+		
+		response.code = "200";
+		response.data = article;
+		
 		return response;
 	}
 }
