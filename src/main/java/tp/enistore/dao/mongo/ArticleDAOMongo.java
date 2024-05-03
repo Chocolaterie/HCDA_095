@@ -68,4 +68,9 @@ public class ArticleDAOMongo implements ArticleDAO {
 		return repository.findByTitle(title);
 	}
 
+	@Override
+	public Article findByTitleExcludeUid(String title, String exlcudeUid) {
+		return repository.findByTitle(title);
+	}
+
 }

@@ -12,6 +12,7 @@ import tp.enistore.bo.ServiceResponse;
 import tp.enistore.dao.ArticleDAO;
 import tp.enistore.dao.CategoryDAO;
 import tp.enistore.dao.mongo.CategoryMongoRepository;
+import tp.enistore.helper.Constante;
 
 @Service
 public class ArticleService {
@@ -41,7 +42,7 @@ public class ArticleService {
 		ServiceResponse<List<Article>> response = new ServiceResponse<List<Article>>();
 				
 		// Cas 1 : 200
-		response.code = "200";
+		response.code = Constante.CD_SUCCESS;
 		response.message = "Articles récupérés avec succès";
 		response.data = articleDAO.findAll();
 		
@@ -68,14 +69,14 @@ public class ArticleService {
 		
 		// 702 - Si l'uid n'existe pas en base
 		if (foundArticle == null) {
-			response.code = "702";
+			response.code = Constante.CD_ERR_NT_FOUND;
 			response.message = String.format("Impossible de récupérer un article avec l'UID %s", uid);
 			
 			return response;
 		}
 		
 		// 200 - Succès
-		response.code = "200";
+		response.code = Constante.CD_SUCCESS;
 		response.message = "Article récupéré avec succès";
 		response.data = foundArticle;
 		
@@ -100,7 +101,7 @@ public class ArticleService {
 		
 		// 701 : Uid non existant car on ne trouve pas l'article
 		if (foundArticle == null) {
-			response.code = "701";
+			response.code = Constante.CD_ERR_TCH;
 			response.message = "Impossible de supprimer un article dont l'UID n'existe pas ";
 			response.data = false;
 			
@@ -112,7 +113,7 @@ public class ArticleService {
 		articleDAO.delete(uid);
 		
 		// -- response
-		response.code = "200";
+		response.code = Constante.CD_SUCCESS;
 		response.message = String.format("L'article %s a été supprimé avec succès", uid);
 		response.data = true;
 		
@@ -141,14 +142,14 @@ public class ArticleService {
 			
 			// 701 - Si le titre existe
 			if (articleByTitle != null) {
-				response.code = "701";
+				response.code = Constante.CD_ERR_TCH;
 				response.message = "Impossible d'ajouter un article avec un titre déjà existant";
 				
 				return response;
 			}
 			
 			// 200 - Succès
-			response.code = "200";
+			response.code = Constante.CD_SUCCESS;
 			response.message = "Article ajouté avec succès";
 			response.data = articleDAO.save(article);
 			
@@ -159,18 +160,18 @@ public class ArticleService {
 		// Edition
 		// ==============================================
 		// Verifier que le titre n'est pas en base
-		Article articleByTitle = articleDAO.findByTitle(article.title);
+		Article articleByTitle = articleDAO.findByTitleExcludeUid(article.title, article.uid);
 		
 		// 701 - Si le titre existe
 		if (articleByTitle != null) {
-			response.code = "701";
+			response.code = Constante.CD_ERR_TCH;
 			response.message = "Impossible de modifier un article avec un titre déjà existant";
 			
 			return response;
 		}
 		
 		// 200 - Succès
-		response.code = "200";
+		response.code = Constante.CD_SUCCESS;
 		response.message = "Article modifié avec succès";
 		response.data = articleDAO.save(article);
 					
@@ -190,14 +191,14 @@ public class ArticleService {
 			
 			// 701 - Si le titre existe
 			if (categoryByName != null) {
-				response.code = "701";
+				response.code = Constante.CD_ERR_TCH;
 				response.message = "Impossible d'ajouter une catégorie avec un label déjà existant";
 				
 				return response;
 			}
 			
 			// 200 - Succès
-			response.code = "200";
+			response.code = Constante.CD_SUCCESS;
 			response.message = "Categorie ajoutée avec succès";
 			response.data = categoryDAO.save(category);
 			
@@ -212,14 +213,14 @@ public class ArticleService {
 		
 		// 701 - Si le titre existe
 		if (categoryByName != null) {
-			response.code = "701";
+			response.code = Constante.CD_ERR_TCH;
 			response.message = "Impossible de modifier une categorie avec un titre déjà existant";
 			
 			return response;
 		}
 		
 		// 200 - Succès
-		response.code = "200";
+		response.code = Constante.CD_SUCCESS;
 		response.message = "Categorie modifié avec succès";
 		response.data = categoryDAO.save(category);
 					
@@ -241,7 +242,7 @@ public class ArticleService {
 		
 		articleDAO.save(article);
 		
-		response.code = "200";
+		response.code = Constante.CD_SUCCESS;
 		response.data = article;
 		
 		return response;

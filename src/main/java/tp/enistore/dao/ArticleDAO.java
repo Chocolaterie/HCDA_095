@@ -12,6 +12,8 @@ public interface ArticleDAO {
 	
 	public Article findByTitle(String title);
 	
+	public Article findByTitleExcludeUid(String title, String exlcudeUid);
+	
 	public void delete(String uid);
 	
 	public Article save(Article article);

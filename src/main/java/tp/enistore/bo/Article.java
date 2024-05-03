@@ -17,6 +17,10 @@ public class Article {
 	@DBRef
 	public Category category;
 	
+	public Article() {
+		
+	}
+
 	public Article(String uid, String title, Category category) {
 		this.uid = uid;
 		this.title = title;

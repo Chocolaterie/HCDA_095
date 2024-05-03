@@ -62,6 +62,20 @@ public class ArticleDAOMock implements ArticleDAO {
 		
 		return null;
 	}
+	
+	@Override
+	public Article findByTitleExcludeUid(String title, String excludeUid) {
+		// Predicate (tout langage PO important)
+		Optional<Article> foundArticle = DB_ARTICLES.stream()
+				.filter(article -> article.title.equals(title) && !article.uid.equals(excludeUid))
+				.findFirst();
+		
+		if (foundArticle.isPresent()) {
+			return foundArticle.get();
+		}
+		
+		return null;
+	}
 
 	@Override
 	public void delete(String uid) {
